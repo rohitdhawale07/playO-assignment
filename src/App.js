@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import Dashboard from "./components/Dashboard";
+import axios from "axios";
+import SideNav from "./components/SideNav";
+
+const BASE_URL = "https://fbcdaab7-5c20-4105-b0e2-2702583834c7.mock.pstmn.io";
 
 function App() {
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        `https://660c07dd3a0766e85dbd3665.mockapi.io/api/customers/customers`
+      );
+      const result = await response.json();
+      console.log(result);
+    }
+
+    fetchData();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex ">
+      <SideNav />
+      <Dashboard />
     </div>
   );
 }
