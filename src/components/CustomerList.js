@@ -31,7 +31,7 @@ const CustomerList = ({ customers, fetchData }) => {
       await axios.delete(
         `https://660c07dd3a0766e85dbd3665.mockapi.io/api/customers/customers/${id}`
       );
-      alert(`data with Tracking ID:- ${id} is successfully deleted`);
+      alert(`Customer with Tracking ID:- ${id} is deleted successfully`);
       fetchData();
     } catch (error) {
       console.error("Error deleting customer:", error);
@@ -122,42 +122,49 @@ const CustomerList = ({ customers, fetchData }) => {
             <th className="p-1 md:py-3 md:px-4 text-left ">Action</th>
           </tr>
         </thead>
-        <tbody className=" sm:text-xs md:text-sm font-medium">
-          {filteredCustomers.map((customer, index) => (
-            <tr
-              key={index}
-              className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
-            >
-              <td className="py-3 px-4">{customer.id}</td>
-              <td className="py-3 px-4">{customer.product}</td>
-              <td className="py-3 px-4">{customer.name}</td>
-              <td className="py-3 px-4 ">{customer.date}</td>
-              <td className="py-3 px-4 ">${customer.amount}</td>
-              <td className="py-3 px-4 ">{customer.paymentMode}</td>
-              <td
-                className={`py-3 px-4 ${
-                  customer.status === "Delivered"
-                    ? "text-green-500"
-                    : customer.status === "Canceled"
-                    ? "text-red-500"
-                    : null
-                } `}
-              >
-                {customer.status}
-              </td>
-              <td className="py-3 px-4 flex gap-2 items-center text-[18px]">
-                {" "}
-                <FaEdit
-                  onClick={() => handleEditClick(customer)}
-                  className="cursor-pointer text-[#283238]"
-                />{" "}
-                <AiOutlineDelete
-                  onClick={() => handleDeleteClick(customer.id)}
-                  className="text-red-500 cursor-pointer"
-                />
+        <tbody className="sm:text-xs md:text-sm font-medium">
+          {filteredCustomers.length === 0 ? (
+            <tr>
+              <td colSpan="8" className="py-3 px-4 text-center text-red-500">
+               Data not available for selected filter
               </td>
             </tr>
-          ))}
+          ) : (
+            filteredCustomers.map((customer, index) => (
+              <tr
+                key={index}
+                className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
+              >
+                <td className="py-3 px-4">{customer.id}</td>
+                <td className="py-3 px-4">{customer.product}</td>
+                <td className="py-3 px-4">{customer.name}</td>
+                <td className="py-3 px-4">{customer.date}</td>
+                <td className="py-3 px-4">${customer.amount}</td>
+                <td className="py-3 px-4">{customer.paymentMode}</td>
+                <td
+                  className={`py-3 px-4 ${
+                    customer.status === "Delivered"
+                      ? "text-green-500"
+                      : customer.status === "Canceled"
+                      ? "text-red-500"
+                      : null
+                  } `}
+                >
+                  {customer.status}
+                </td>
+                <td className="py-3 px-4 flex gap-2 items-center text-[18px]">
+                  <FaEdit
+                    onClick={() => handleEditClick(customer)}
+                    className="cursor-pointer text-[#283238]"
+                  />
+                  <AiOutlineDelete
+                    onClick={() => handleDeleteClick(customer.id)}
+                    className="text-red-500 cursor-pointer"
+                  />
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
       {editModalOpen && (
